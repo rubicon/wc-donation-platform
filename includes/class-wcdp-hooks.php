@@ -131,10 +131,11 @@ class WCDP_Hooks
         }
 
         $order = null;
-        if (isset($args['order'])) {
+        if (isset($args['order']) && $args['order'] instanceof WC_Order) {
             $order = $args['order'];
         } else if (isset($args['order_id'])) {
-            $order = wc_get_order($args['order_id']);
+            $fetched_order = wc_get_order($args['order_id']);
+            $order = $fetched_order instanceof WC_Order ? $fetched_order : null;
         }
         $path = WCDP_DIR . 'includes/wc-templates/';
         $donable = WCDP_Form::is_donable(get_queried_object_id());
